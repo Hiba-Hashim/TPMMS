@@ -31,12 +31,12 @@ public class Pass2 {
 		String line;
         
         //store the blocks in the inputBuffers
-		for(int chunk = 0 ; chunk <= numberOfChunks ; chunk++){
+		for(int chunk = 1 ; chunk <= numberOfChunks ; chunk++){
 			String chunkFilePath = AppConstants.sortedChunksPath + "chunk" + chunk + ".txt";
 			//BufferedReader br = new BufferedReader(new FileReader(chunkFilePath));
 			//RandomAccessFile raf = new RandomAccessFile(chunkFilePath, "r");
 			int nextblock = 0;
-			for( int block = 0; block <= numberOfBlocksInAChunk; block++){
+			for( int block = 0; block <= numberOfRecordsInAChunk; block++){
 				inputBuffers[chunk][block]= new String(readFromBlock(chunkFilePath, nextblock, blockSize));
 			    nextblock=+ blockSize;		
 			}
@@ -64,7 +64,6 @@ public class Pass2 {
 				}							
 			}
 		}
-
 	}
 
 	private static byte[] readFromBlock(String filePath, int position, int size) throws IOException {
@@ -74,7 +73,6 @@ public class Pass2 {
         file.read(bytes);
         file.close();
         return bytes;
- 
     }
 	
 	private static void savetoDisk() {

@@ -1,5 +1,4 @@
 package memory;
-
 import appConstants.AppConstants;
 
 public class Memory {
