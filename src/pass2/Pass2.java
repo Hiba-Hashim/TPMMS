@@ -20,47 +20,40 @@ public class Pass2 {
 		int numberOfRecordsInAChunk = numberOfBlocksInAChunk * AppConstants.blockSize;
 		int blockSize = AppConstants.blockSize; //buffer size ( is no. records in a block = size of block)
 		
-		int[] empIds = new int[numberOfRecordsInAChunk];
-		String[] dates = new String[numberOfRecordsInAChunk];  
-		String[] data = new String[numberOfRecordsInAChunk];
+		int[][][] empIds = new int[numberOfChunks][numberOfBlocksInAChunk][numberOfRecordsInAChunk];
+		String[][][] dates = new String[numberOfChunks][numberOfBlocksInAChunk][numberOfRecordsInAChunk];  
+		String[][][] data = new String[numberOfChunks][numberOfBlocksInAChunk][numberOfRecordsInAChunk];
 		
 		// M-1 buffers for read & 1 buffer for write
-		String[][] inputBuffers = new String[numberOfChunks][numberOfRecordsInAChunk];
+		String[][][] inputBuffers = new String[numberOfChunks][numberOfBlocksInAChunk][numberOfRecordsInAChunk];
 		int[] outputBuffer = new int[blockSize]; 
 		
 		String line;
         
         //store the blocks in the inputBuffers
 		for(int chunk = 0 ; chunk <= numberOfChunks ; chunk++){
-			String chunkFilePath = AppConstants.sortedChunksPath + "chunk" + chunk + ".txt";
-			//BufferedReader br = new BufferedReader(new FileReader(chunkFilePath));
-			//RandomAccessFile raf = new RandomAccessFile(chunkFilePath, "r");
-			int nextblock = 0;
+			String chunkFilePath = AppConstants.sortedChunksPath + "chunk" + chunk + ".txt";		
+			BufferedReader br = new BufferedReader(new FileReader(chunkFilePath));
+			while(( line = br.readLine())!= null){
 			for( int block = 0; block <= numberOfBlocksInAChunk; block++){
-				inputBuffers[chunk][block]= new String(readFromBlock(chunkFilePath, nextblock, blockSize));
-			    nextblock=+ blockSize;		
+				for( int record = 0; record <= blockSize; record++){
+				inputBuffers[chunk][block][record]= br.readLine();
+				int empId = Integer.parseInt(line.substring(0, 8));
+		        empIds[chunk][block][record] = empId;
+		        String date = line.substring(9, 18);
+		        dates[chunk][block][record] = date;
+		        data[chunk][block][record] = line.substring(19);
+				}
 			}
-		}
+		}}
 		
-		for(int j=0; j<= numberOfBlocksInAChunk; j++){
-			for (int i =0; i<= numberOfChunks; i++){
-				String records = inputBuffers[i][j];
-				
-			}
-		}
 		
 		//compare blocks
 		int k=0;
-		for (int i =0; i<= numberOfChunks; i++){
-			String chunkFilePath = AppConstants.sortedChunksPath + "chunk" + i + ".txt";
-			BufferedReader br = new BufferedReader(new FileReader(chunkFilePath));
+		for (int i =0; i<= numberOfChunks; i++){//put the chunck loop last
 			for(int j=0; j<= numberOfBlocksInAChunk; j++){
-				while (( line  = br.readLine()) != null){
-					int empId = Integer.parseInt(line.substring(0, 8));
-			        empIds[k] = empId;
-			        String date = line.substring(9, 18);
-			        dates[k] = date;
-			        data[k] = line.substring(19);
+				for( int record = 0; record <= blockSize; record++){
+					
 				}							
 			}
 		}
