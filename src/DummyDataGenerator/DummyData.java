@@ -10,12 +10,12 @@ import java.util.Random;
 public class DummyData {
 
 	public static void main(String args[]) throws NumberFormatException, IOException {
-		generateDummyData(500000, "./data/data1.txt");
-		generateDummyData(1000000, "./data/data2.txt");
+		generateDummyData(500000, "../data/data1.txt");
+		generateDummyData(1000000, "../data/data2.txt");
 	}
 
 	private static void generateDummyData(int numberOfRecordsToGenerate, String newDataFilePath) throws NumberFormatException, IOException {
-		String existingDataFilePath = "./data/sample.txt";
+		String existingDataFilePath = "../data/sample.txt";
 		int[] empIds = new int[10000];
 		String[] data = new String[10000];
 
